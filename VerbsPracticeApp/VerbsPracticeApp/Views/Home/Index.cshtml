@@ -1,8 +1,52 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model VerbModel
+@{
+    ViewData["Title"] = "Irregular verbs";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@*<div class="text-center">
+        <h1 class="display-4">Welcome</h1>
+        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    </div>*@
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.Label(string.Empty, $"Status:{Model.SuccessCount}/{Model.TotalCount}", htmlAttributes: new { @class = "control-label" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Infinitive, "Infinitive", htmlAttributes: new { @class = "control-label" })
+
+        @Html.TextBoxFor(m => m.Infinitive, new { @readonly = "readonly", @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.Label(string.Empty, Model.English, htmlAttributes: new { @class = "control-label" })
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ImperfectumSingular" class="control-label"></label>
+        <input asp-for="ImperfectumSingular" class="form-control" />
+        <span asp-validation-for="ImperfectumSingular" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ImperfectumPlural" class="control-label"></label>
+        <input asp-for="ImperfectumPlural" class="form-control" />
+        <span asp-validation-for="ImperfectumPlural" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Perfectum" class="control-label"></label>
+        <input asp-for="Perfectum" class="form-control" />
+        <span asp-validation-for="Perfectum" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Check" class="btn btn-primary" />
+    </div>
+}
