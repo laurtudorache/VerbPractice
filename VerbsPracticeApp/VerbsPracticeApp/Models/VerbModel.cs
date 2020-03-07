@@ -21,10 +21,16 @@ namespace VerbsPracticeApp.Models
         [Display(Name = "Imperfectum singular")]
         public string ImperfectumSingular { get; set; }
 
+        public bool ImperfectumSingularCorrect { get; set; }
+
         [Display(Name = "Imperfectum plural")]
         public string ImperfectumPlural { get; set; }
 
+        public bool ImperfectumPluralCorrect { get; set; }
+
         [Display(Name = "Perfectum")]
         public string Perfectum { get; set; }
+
+        public bool PerfectumCorrect { get; set; }
     }
 }

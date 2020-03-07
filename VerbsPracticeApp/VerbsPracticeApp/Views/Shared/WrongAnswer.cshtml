@@ -3,7 +3,7 @@
 <div>
 
     <p class="col-sm-10">
-        @Html.DisplayFor(model => model.Infinitive)
+        @Html.Label(string.Empty, $"{Model.Infinitive}", htmlAttributes: new { @class = "control-label font-weight-bold" })
     </p>
 
     <p class="col-sm-4">
@@ -17,21 +17,21 @@
         @Html.DisplayNameFor(model => model.ImperfectumSingular)
     </p>
     <p class="col-sm-8">
-        @Html.DisplayFor(model => model.ImperfectumSingular)
+        @Html.Label(string.Empty, $"{Model.ImperfectumSingular}", htmlAttributes: new { @class = "control-label font-weight-bold " + @String.Format("{0}", Model.ImperfectumSingularCorrect ? "text-success" : "text-danger") })
     </p>
 
     <p class="col-sm-4">
         @Html.DisplayNameFor(model => model.ImperfectumPlural)
     </p>
     <p class="col-sm-8">
-        @Html.DisplayFor(model => model.ImperfectumPlural)
+        @Html.Label(string.Empty, $"{Model.ImperfectumPlural}", htmlAttributes: new { @class = "control-label font-weight-bold " + @String.Format("{0}", Model.ImperfectumPluralCorrect ? "text-success" : "text-danger") })
     </p>
 
     <p class="col-sm-4">
         @Html.DisplayNameFor(model => model.Perfectum)
     </p>
     <p class="col-sm-8">
-        @Html.DisplayFor(model => model.Perfectum)
+        @Html.Label(string.Empty, $"{Model.Perfectum}", htmlAttributes: new { @class = "control-label font-weight-bold " + @String.Format("{0}", Model.PerfectumCorrect ? "text-success" : "text-danger") })
     </p>
     <p class="col-sm-4">
         <a asp-action="Index">Next verb</a>

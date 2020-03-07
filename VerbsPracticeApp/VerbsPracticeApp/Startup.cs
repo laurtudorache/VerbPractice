@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using VerbsPracticeApp.Controllers;
 
 namespace VerbsPracticeApp
 {
@@ -19,7 +20,8 @@ namespace VerbsPracticeApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDistributedMemoryCache();
-
+            services.AddSingleton<IVerbsRepository, VerbsRepository>();
+            services.AddTransient<IVerbRandomizer, VerbRandomizer>();
             services.AddSession(options =>
             {
                 // Set a short timeout for easy testing.
@@ -31,7 +33,7 @@ namespace VerbsPracticeApp
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IVerbsRepository verbsRepository)
         {
             if (env.IsDevelopment())
             {
@@ -54,6 +56,7 @@ namespace VerbsPracticeApp
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+            verbsRepository.Initialize(env);
         }
     }
 }

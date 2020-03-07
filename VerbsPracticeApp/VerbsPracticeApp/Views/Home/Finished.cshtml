@@ -1,0 +1,12 @@
+﻿@model VerbsPracticeApp.Models.FinishedModel
+
+@{
+    ViewData["Title"] = "Well done!";
+}
+
+<div>
+    <h4>You have checked all the verbs. Your results are: @Model.SuccessCount out of @Model.TotalCount</h4>
+</div>
+<div>
+    <a asp-action="Index">Back to start</a>
+</div>
