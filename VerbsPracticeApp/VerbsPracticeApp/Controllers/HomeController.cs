@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -42,9 +41,9 @@ namespace VerbsPracticeApp.Controllers
                 {
                     TotalCount = sessionData.TotalCount,
                     SuccessCount = sessionData.SuccessCount
-                };
+                }; HttpContext.Session.Set(SessionKeys.UserProgressKey, sessionData);
+
                 sessionData = new ProgressData();
-                HttpContext.Session.Set(SessionKeys.UserProgressKey, sessionData);
                 return View("Finished", finishedModel);
             }
 
@@ -57,7 +56,6 @@ namespace VerbsPracticeApp.Controllers
             var model = new VerbModel();
             model.SuccessCount = sessionData.SuccessCount;
             model.TotalCount = sessionData.TotalCount;
-
             model.Infinitive = verb.Infinitief;
             model.English = verb.English;
 
@@ -84,35 +82,20 @@ namespace VerbsPracticeApp.Controllers
             var imperfectumPlural = model.ImperfectumPlural ?? string.Empty;
             var perfectum = model.Perfectum ?? string.Empty;
 
-            if (imperfectumSingular.ToLower().Trim().Equals(verb.ImperfectumSg)
-                &&
-                imperfectumPlural.ToLower().Trim().Equals(verb.ImperfectumPl)
-                &&
-                perfectum.ToLower().Trim().Equals(verb.Perfectum)
-                )
+            var correctionModel = new CorrectionModel();
+            correctionModel.Infinitive = verb.Infinitief;
+            correctionModel.English = verb.English;
+            correctionModel.ImperfectumSingular = new TenseModel(verb.ImperfectumSg, imperfectumSingular.ToLower());
+            correctionModel.ImperfectumPlural = new TenseModel(verb.ImperfectumPl, imperfectumPlural.ToLower());
+            correctionModel.Perfectum = new TenseModel(verb.Perfectum, perfectum.ToLower());
+            if (correctionModel.IsAnswerCorrect)
             {
                 sessionData.SuccessCount++;
             }
-            else
-            {
-                var correctionModel = new VerbModel();
-                correctionModel.TotalCount = sessionData.TotalCount;
-                correctionModel.SuccessCount = sessionData.SuccessCount;
-                correctionModel.Infinitive = verb.Infinitief;
-                correctionModel.ImperfectumSingular = verb.ImperfectumSg;
-                correctionModel.ImperfectumSingularCorrect = imperfectumSingular.ToLower().Trim().Equals(verb.ImperfectumSg);
-                correctionModel.ImperfectumPlural = verb.ImperfectumPl;
-                correctionModel.ImperfectumPluralCorrect = imperfectumPlural.ToLower().Trim().Equals(verb.ImperfectumPl);
-                correctionModel.Perfectum = verb.Perfectum;
-                correctionModel.PerfectumCorrect = perfectum.ToLower().Trim().Equals(verb.Perfectum);
-                correctionModel.English = verb.English;
-                HttpContext.Session.Set(SessionKeys.UserProgressKey, sessionData);
-                return View("WrongAnswer", correctionModel);
-            }
+            correctionModel.CorrectCount = sessionData.SuccessCount;
 
             HttpContext.Session.Set(SessionKeys.UserProgressKey, sessionData);
-
-            return RedirectToAction("Index");
+            return View("WrongAnswer", correctionModel);
         }
 
         public IActionResult Privacy()

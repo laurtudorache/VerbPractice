@@ -3,14 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace VerbsPracticeApp.Models
 {
-    public class VerbModel
+    public class CorrectionModel
     {
-        [ReadOnly(true)]
-        public int TotalCount { get; set; }
-
-        [ReadOnly(true)]
-        public int SuccessCount { get; set; }
-
         [ReadOnly(true)]
         [Display(Name = "Infinitive")]
         public string Infinitive { get; set; }
@@ -19,12 +13,18 @@ namespace VerbsPracticeApp.Models
         public string English { get; set; }
 
         [Display(Name = "Imperfectum singular")]
-        public string ImperfectumSingular { get; set; }
+        public TenseModel ImperfectumSingular { get; set; }
 
         [Display(Name = "Imperfectum plural")]
-        public string ImperfectumPlural { get; set; }
+        public TenseModel ImperfectumPlural { get; set; }
 
         [Display(Name = "Perfectum")]
-        public string Perfectum { get; set; }
+        public TenseModel Perfectum { get; set; }
+
+        public int CorrectCount { get; set; }
+
+        public bool IsAnswerCorrect => ImperfectumSingular.IsAnswerCorrect
+            && ImperfectumPlural.IsAnswerCorrect
+            && Perfectum.IsAnswerCorrect;
     }
 }

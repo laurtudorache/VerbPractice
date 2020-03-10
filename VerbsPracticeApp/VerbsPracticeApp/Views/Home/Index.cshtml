@@ -19,8 +19,8 @@
 
     <span class="form-group float-right">
         @Html.Label(string.Empty, $"Status:", htmlAttributes: new { @class = "control-label" })
-        @Html.Label(string.Empty, $"{Model.SuccessCount}", htmlAttributes: new { @class = "text-success font-weight-bold" })
-        @Html.Label(string.Empty, $"/ {Model.TotalCount}", htmlAttributes: new { @class = "control-label font-weight-bold" })
+        @Html.Label(string.Empty, $"{Model.SuccessCount}", htmlAttributes: new { @class = "text-success font-weight-bolder" })
+        @Html.Label(string.Empty, $"/ {Model.TotalCount}", htmlAttributes: new { @class = "control-label font-weight-bolder" })
     </span>
 
     <div class="form-group">
@@ -35,7 +35,7 @@
     <div class="form-group">
         <label asp-for="ImperfectumSingular" class="control-label"></label>
         <input asp-for="ImperfectumSingular" class="form-control " />
-        <span asp-validation-for="ImperfectumSingular" class="text-danger @String.Format("{0}", Model.ImperfectumSingularCorrect? "text-success" : "text-danger")"></span>
+        <span asp-validation-for="ImperfectumSingular" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="ImperfectumPlural" class="control-label"></label>
