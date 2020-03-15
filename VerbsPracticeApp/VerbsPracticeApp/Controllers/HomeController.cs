@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using VerbsPracticeApp.Models;
@@ -12,10 +12,14 @@ namespace VerbsPracticeApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private IVerbsRepository verbsRepository;
+        private IVerbRandomizer randomizer;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IVerbsRepository verbsRepository, IVerbRandomizer verbRandomizer)
         {
             _logger = logger;
+            this.verbsRepository = verbsRepository;
+            randomizer = verbRandomizer;
         }
 
         [HttpGet]
@@ -29,15 +33,31 @@ namespace VerbsPracticeApp.Controllers
             else
             {
                 sessionData = new ProgressData();
-                HttpContext.Session.Set(SessionKeys.UserProgressKey, sessionData);
+            }
+            var totalCount = verbsRepository.Count(false, true);
+            if (sessionData.Indexes.Length == totalCount)
+            {
+                var finishedModel = new FinishedModel
+                {
+                    TotalCount = sessionData.TotalCount,
+                    SuccessCount = sessionData.SuccessCount
+                }; HttpContext.Session.Set(SessionKeys.UserProgressKey, sessionData);
+
+                sessionData = new ProgressData();
+                return View("Finished", finishedModel);
             }
 
+            var nextVerbIndex = randomizer.GetNextIndex(totalCount, sessionData.Indexes);
+            VerbData verb = verbsRepository.GetVerbByIndex(nextVerbIndex);
+            List<int> newIndexes = new List<int>(sessionData.Indexes);
+            newIndexes.Add(nextVerbIndex);
+            sessionData.Indexes = newIndexes.ToArray();
+            HttpContext.Session.Set(SessionKeys.UserProgressKey, sessionData);
             var model = new VerbModel();
             model.SuccessCount = sessionData.SuccessCount;
             model.TotalCount = sessionData.TotalCount;
-            HttpContext.Session.Set(SessionKeys.UserProgressKey, sessionData);
-            model.Infinitive = Guid.NewGuid().ToString();
-            model.English = "English";
+            model.Infinitive = verb.Infinitief;
+            model.English = verb.English;
 
             return View(model);
         }
@@ -56,25 +76,26 @@ namespace VerbsPracticeApp.Controllers
             }
 
             sessionData.TotalCount++;
-            if (sessionData.TotalCount % 2 == 1)
+            var verb = verbsRepository.GetVerbByIndex(sessionData.Indexes.Last());
+
+            var imperfectumSingular = model.ImperfectumSingular ?? string.Empty;
+            var imperfectumPlural = model.ImperfectumPlural ?? string.Empty;
+            var perfectum = model.Perfectum ?? string.Empty;
+
+            var correctionModel = new ResultViewModel();
+            correctionModel.Infinitive = verb.Infinitief;
+            correctionModel.English = verb.English;
+            correctionModel.ImperfectumSingular = new TenseModel(verb.ImperfectumSg, imperfectumSingular.Trim().ToLower());
+            correctionModel.ImperfectumPlural = new TenseModel(verb.ImperfectumPl, imperfectumPlural.Trim().ToLower());
+            correctionModel.Perfectum = new TenseModel(verb.Perfectum, perfectum.Trim().ToLower());
+            if (correctionModel.IsAnswerCorrect)
             {
                 sessionData.SuccessCount++;
             }
-            HttpContext.Session.Set(SessionKeys.UserProgressKey, sessionData);
+            correctionModel.CorrectCount = sessionData.SuccessCount;
 
-            if (sessionData.TotalCount % 2 == 0)
-            {
-                var correctionModel = new VerbModel();
-                correctionModel.TotalCount = sessionData.TotalCount;
-                correctionModel.SuccessCount = sessionData.SuccessCount;
-                correctionModel.Infinitive = "Inf";
-                correctionModel.ImperfectumSingular = "Sg";
-                correctionModel.ImperfectumPlural = "Pl";
-                correctionModel.Perfectum = "Perfectum";
-                correctionModel.English = "English";
-                return View("WrongAnswer", correctionModel);
-            }
-            return RedirectToAction("Index");
+            HttpContext.Session.Set(SessionKeys.UserProgressKey, sessionData);
+            return View("ResultView", correctionModel);
         }
 
         public IActionResult Privacy()

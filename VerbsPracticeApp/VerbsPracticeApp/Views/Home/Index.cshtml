@@ -17,14 +17,16 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     </div>
 
-    <div class="form-group">
-        @Html.Label(string.Empty, $"Status:{Model.SuccessCount}/{Model.TotalCount}", htmlAttributes: new { @class = "control-label" })
-    </div>
+    <span class="form-group float-right">
+        @Html.Label(string.Empty, $"Status:", htmlAttributes: new { @class = "control-label" })
+        @Html.Label(string.Empty, $"{Model.SuccessCount}", htmlAttributes: new { @class = "text-success font-weight-bolder" })
+        @Html.Label(string.Empty, $"/ {Model.TotalCount}", htmlAttributes: new { @class = "control-label font-weight-bolder" })
+    </span>
 
     <div class="form-group">
         @Html.LabelFor(model => model.Infinitive, "Infinitive", htmlAttributes: new { @class = "control-label" })
 
-        @Html.TextBoxFor(m => m.Infinitive, new { @readonly = "readonly", @class = "form-control" })
+        @Html.Label(string.Empty, Model.Infinitive, htmlAttributes: new { @class = "text-body font-weight-bold" })
     </div>
     <div class="form-group">
         @Html.Label(string.Empty, Model.English, htmlAttributes: new { @class = "control-label" })
@@ -32,7 +34,7 @@
 
     <div class="form-group">
         <label asp-for="ImperfectumSingular" class="control-label"></label>
-        <input asp-for="ImperfectumSingular" class="form-control" />
+        <input asp-for="ImperfectumSingular" class="form-control " />
         <span asp-validation-for="ImperfectumSingular" class="text-danger"></span>
     </div>
     <div class="form-group">
@@ -49,4 +51,10 @@
     <div class="form-group">
         <input type="submit" value="Check" class="btn btn-primary" />
     </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("input[type=text]").first().focus();
+        });
+    </script>
 }
