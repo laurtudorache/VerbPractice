@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace VerbsPracticeApp.Models
 {
-    public class CorrectionModel
+    public class ResultViewModel
     {
         [ReadOnly(true)]
         [Display(Name = "Infinitive")]

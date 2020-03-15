@@ -1,0 +1,103 @@
+﻿@model VerbsPracticeApp.Models.ResultViewModel
+
+<div class="card @String.Format("{0}", Model.IsAnswerCorrect ? "bg-success text-white" : "bg-danger text-white")">
+    <div class="card-body">@String.Format("{0}", Model.IsAnswerCorrect ? "You have " + Model.CorrectCount + " correct answer(s)!" : "Incorrect answer")</div>
+</div>
+<br />
+<div class="container">
+
+    <div class="row">
+        <div class="col-12">
+            <p>
+                @Html.Label(string.Empty, $"{Model.Infinitive}", htmlAttributes: new { @class = "control-label font-weight-bold" })
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+
+            @Html.DisplayNameFor(model => model.English)
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            @Html.DisplayFor(model => model.English)
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-12">
+            @Html.DisplayNameFor(model => model.ImperfectumSingular)
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-4 font-weight-bold">
+            @if (Model.ImperfectumSingular.IsAnswerCorrect)
+            {
+                @Html.Label(string.Empty, $"{Model.ImperfectumSingular.Answer}", htmlAttributes: new { @class = "font-weight-bold" })
+            }
+            else
+            {
+                <del>@Model.ImperfectumSingular.Answer</del>
+            }
+        </div>
+        <div class="col-4">
+            @Html.Label(string.Empty, $"{Model.ImperfectumSingular.Original}", htmlAttributes: new { @class = "font-weight-bold " + @String.Format("{0}", Model.ImperfectumSingular.IsAnswerCorrect ? "text-success" : "text-danger") })
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            @Html.DisplayNameFor(model => model.ImperfectumPlural)
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-4 font-weight-bold">
+            @if (Model.ImperfectumPlural.IsAnswerCorrect)
+            {
+                @Html.Label(string.Empty, $"{Model.ImperfectumPlural.Answer}", htmlAttributes: new { @class = "font-weight-bold" })
+            }
+            else
+            {
+                <del>@Model.ImperfectumPlural.Answer</del>
+            }
+        </div>
+
+        <div class="col-4">
+            @Html.Label(string.Empty, $"{Model.ImperfectumPlural.Original}", htmlAttributes: new { @class = "font-weight-bold " + @String.Format("{0}", Model.ImperfectumPlural.IsAnswerCorrect ? "text-success" : "text-danger") })
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            @Html.DisplayNameFor(model => model.Perfectum)
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-4 font-weight-bold">
+            @if (Model.Perfectum.IsAnswerCorrect)
+            {
+                @Html.Label(string.Empty, $"{Model.Perfectum.Answer}", htmlAttributes: new { @class = "font-weight-bold" })
+            }
+            else
+            {
+                <del>@Model.Perfectum.Answer</del>
+            }
+        </div>
+
+        <div class="col-4">
+            @Html.Label(string.Empty, $"{Model.Perfectum.Original}", htmlAttributes: new { @class = "font-weight-bold " + @String.Format("{0}", Model.Perfectum.IsAnswerCorrect ? "text-success" : "text-danger") })
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-12">
+            <a asp-action="Index">Next verb</a>
+        </div>
+    </div>
+</div>
