@@ -1,4 +1,6 @@
-﻿namespace VerbsPracticeApp.SessionData
+﻿using System;
+
+namespace VerbsPracticeApp.SessionData
 {
     /// <summary>
     /// an instance of this class is kept in session to keep the progress of the user
@@ -7,7 +9,7 @@
     {
         public ProgressData()
         {
-            Indexes = new int[] { };
+            Indexes = Array.Empty<int>();
         }
 
         /// <summary>
@@ -26,7 +28,7 @@
         public int[] Indexes { get; set; }
     }
 
-    public class SessionKeys
+    public static class SessionKeys
     {
         public const string UserProgressKey = "UserProgress";
     }

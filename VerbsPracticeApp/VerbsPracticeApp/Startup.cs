@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using VerbsPractice.Application.Services;
+using VerbsPractice.Persistence;
+
 using VerbsPracticeApp.Controllers;
 
 namespace VerbsPracticeApp
@@ -21,7 +24,11 @@ namespace VerbsPracticeApp
         {
             services.AddDistributedMemoryCache();
             services.AddSingleton<IVerbsRepository, VerbsRepository>();
+            services.AddSingleton<IVerbsFileReader, VerbsFileReader>();
             services.AddTransient<IVerbRandomizer, VerbRandomizer>();
+            services.AddTransient<INameServiceResolver, NameServiceResolver>();
+            services.AddTransient<IVerbsQuery, IregularAllVerbsQuery>();
+            services.AddTransient<IVerbsQuery, IregularBasicVerbsQuery>();
             services.AddSession(options =>
             {
                 // Set a short timeout for easy testing.
@@ -56,7 +63,7 @@ namespace VerbsPracticeApp
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
-            verbsRepository.Initialize(env);
+            verbsRepository.Initialize(env.ContentRootPath);
         }
     }
 }
