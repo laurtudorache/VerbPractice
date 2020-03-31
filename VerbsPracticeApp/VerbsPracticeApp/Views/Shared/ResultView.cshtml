@@ -45,7 +45,7 @@
             }
         </div>
         <div class="col-4">
-            @Html.Label(string.Empty, $"{Model.ImperfectumSingular.Original}", htmlAttributes: new { @class = "font-weight-bold " + @String.Format("{0}", Model.ImperfectumSingular.IsAnswerCorrect ? "text-success" : "text-danger") })
+            @Html.Label(string.Empty, $"{Model.ImperfectumSingular.Reference}", htmlAttributes: new { @class = "font-weight-bold " + @String.Format("{0}", Model.ImperfectumSingular.IsAnswerCorrect ? "text-success" : "text-danger") })
         </div>
     </div>
 
@@ -68,7 +68,7 @@
         </div>
 
         <div class="col-4">
-            @Html.Label(string.Empty, $"{Model.ImperfectumPlural.Original}", htmlAttributes: new { @class = "font-weight-bold " + @String.Format("{0}", Model.ImperfectumPlural.IsAnswerCorrect ? "text-success" : "text-danger") })
+            @Html.Label(string.Empty, $"{Model.ImperfectumPlural.Reference}", htmlAttributes: new { @class = "font-weight-bold " + @String.Format("{0}", Model.ImperfectumPlural.IsAnswerCorrect ? "text-success" : "text-danger") })
         </div>
     </div>
 
@@ -91,7 +91,7 @@
         </div>
 
         <div class="col-4">
-            @Html.Label(string.Empty, $"{Model.Perfectum.Original}", htmlAttributes: new { @class = "font-weight-bold " + @String.Format("{0}", Model.Perfectum.IsAnswerCorrect ? "text-success" : "text-danger") })
+            @Html.Label(string.Empty, $"{Model.Perfectum.Reference}", htmlAttributes: new { @class = "font-weight-bold " + @String.Format("{0}", Model.Perfectum.IsAnswerCorrect ? "text-success" : "text-danger") })
         </div>
     </div>
     <br />

@@ -1,4 +1,4 @@
-﻿namespace VerbsPracticeApp.Controllers
+﻿namespace VerbsPractice.Application.Services
 {
     public interface IVerbRandomizer
     {

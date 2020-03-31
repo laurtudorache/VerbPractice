@@ -1,16 +1,18 @@
-﻿namespace VerbsPracticeApp.Models
+﻿using System;
+
+namespace VerbsPracticeApp.Models
 {
     public class TenseModel
     {
-        public TenseModel(string original, string answer)
+        public TenseModel(string referenceTense, string answer)
         {
-            Original = original;
-            Answer = answer;
+            Reference = referenceTense ?? string.Empty;
+            Answer = answer == null ? string.Empty : answer.Trim().ToLowerInvariant();
         }
 
-        public string Original { get; set; }
+        public string Reference { get; }
 
-        public string Answer { get; set; }
-        public bool IsAnswerCorrect => Original.Equals(Answer);
+        public string Answer { get; }
+        public bool IsAnswerCorrect => Reference.Equals(Answer, StringComparison.InvariantCultureIgnoreCase);
     }
 }
